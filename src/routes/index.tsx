@@ -3,15 +3,14 @@ import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import NotFound from "pages/404";
 import { AuthGuard } from "guards";
+import Login from "pages/Login";
 
 interface IRoutes {
   id: number;
   component: React.FC;
   path: string;
-  isPublic: boolean;
-  layout: React.FC;
-
-  guard: any;
+  layout?: React.FC;
+  guard?: any;
 }
 
 const Loadable = (Component: any) => (props: any) => {
@@ -25,12 +24,12 @@ const Loadable = (Component: any) => (props: any) => {
 export default function AppRoutes() {
   return (
     <Routes>
-      {routes.map(({ component, layout, path, guard, isPublic, id }) => {
+      {routes.map(({ component, layout, path, guard, id }) => {
         const Component = component;
         const Layout = layout || Fragment;
-        const Guard = guard;
+        const Guard = guard || Fragment;
         return (
-          <Route key={path} element={<Layout />}>
+          <Route key={id} element={<Layout />}>
             <Route
               path={path}
               element={
@@ -43,6 +42,8 @@ export default function AppRoutes() {
         );
       })}
 
+      <Route path="/" element={<Navigate to={"/dashboard/app"} />} />
+      <Route path="/auth/login" element={<Login />} />
       <Route path="/" element={<Navigate to={"/dashboard/app"} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -57,6 +58,5 @@ const routes: IRoutes[] = [
     guard: AuthGuard,
     component: Loadable(lazy(() => import("pages/DashboardApp"))),
     path: "/dashboard/app",
-    isPublic: false,
   },
 ];

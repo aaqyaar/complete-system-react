@@ -6,8 +6,8 @@ import { PATH_AUTH } from "routes/paths";
 export default function AuthGuard({ children }: { children: ReactNode }) {
   const { pathname }: any = useLocation();
   const [requestedLocation, setRequestedLocation] = useState(null);
-  const { isAuth } = useAuth();
-  if (!isAuth) {
+  const { token } = useAuth();
+  if (!token) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }

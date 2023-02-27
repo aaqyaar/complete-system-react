@@ -2,7 +2,7 @@ import DashboardLayout from "layouts/dashboard";
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import NotFound from "pages/404";
-import { AuthGuard, GuestGuard } from "guards";
+import { AuthGuard, GuestGuard, RoleBasedGuard } from "guards";
 import Login from "pages/auth/Login";
 import { PATH_ADMIN } from "./paths";
 import { LoadingScreen } from "components";
@@ -35,9 +35,11 @@ export default function AppRoutes() {
             <Route
               path={path}
               element={
-                <Guard>
-                  <Component />
-                </Guard>
+                <RoleBasedGuard>
+                  <Guard>
+                    <Component />
+                  </Guard>
+                </RoleBasedGuard>
               }
             />
           </Route>

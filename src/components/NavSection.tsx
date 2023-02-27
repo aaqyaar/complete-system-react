@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { Icon } from '@iconify/react';
+import { useState } from "react";
+import { Icon } from "@iconify/react";
 import {
   NavLink as RouterLink,
   matchPath,
   useLocation,
-} from 'react-router-dom';
-import { Icons } from 'icons-exports';
+} from "react-router-dom";
+import { Icons } from "icons-exports";
 // material
-import { alpha, useTheme, styled } from '@mui/material/styles';
+import { alpha, useTheme, styled } from "@mui/material/styles";
 import {
   Box,
   List,
@@ -16,7 +16,7 @@ import {
   ListItemIcon,
   ListSubheader,
   ListItemButton,
-} from '@mui/material';
+} from "@mui/material";
 
 const ListSubheaderStyle = styled((props: any) => (
   <ListSubheader disableSticky disableGutters {...props} />
@@ -31,19 +31,19 @@ const ListSubheaderStyle = styled((props: any) => (
 const ListItemStyle = styled<any>(ListItemButton)(({ theme }: any) => ({
   ...theme.typography.body2,
   height: 48,
-  position: 'relative',
-  textTransform: 'capitalize',
+  position: "relative",
+  textTransform: "capitalize",
   paddingLeft: theme.spacing(5),
   paddingRight: theme.spacing(2.5),
   color: theme.palette.text.secondary,
-  '&:before': {
+  "&:before": {
     top: 0,
     right: 0,
     width: 3,
     bottom: 0,
     content: "''",
-    display: 'none',
-    position: 'absolute',
+    display: "none",
+    position: "absolute",
     borderTopLeftRadius: 4,
     borderBottomLeftRadius: 4,
     backgroundColor: theme.palette.primary.main,
@@ -53,9 +53,9 @@ const ListItemStyle = styled<any>(ListItemButton)(({ theme }: any) => ({
 const ListItemIconStyle = styled(ListItemIcon)({
   width: 22,
   height: 22,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
 });
 
 function NavItem({ item, isShow }: { isShow: boolean; item: any }) {
@@ -73,18 +73,18 @@ function NavItem({ item, isShow }: { isShow: boolean; item: any }) {
   };
 
   const activeRootStyle = {
-    color: 'primary.main',
-    fontWeight: 'fontWeightMedium',
+    color: "primary.main",
+    fontWeight: "fontWeightMedium",
     bgcolor: alpha(
       theme.palette.primary.main,
       theme.palette.action.selectedOpacity
     ),
-    '&:before': { display: 'block' },
+    "&:before": { display: "block" },
   };
 
   const activeSubStyle = {
-    color: 'text.primary',
-    fontWeight: 'fontWeightMedium',
+    color: "text.primary",
+    fontWeight: "fontWeightMedium",
   };
 
   if (children) {
@@ -137,16 +137,16 @@ function NavItem({ item, isShow }: { isShow: boolean; item: any }) {
                         sx={{
                           width: 4,
                           height: 4,
-                          display: 'flex',
-                          borderRadius: '50%',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          bgcolor: 'text.disabled',
+                          display: "flex",
+                          borderRadius: "50%",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          bgcolor: "text.disabled",
                           transition: (theme) =>
-                            theme.transitions.create('transform'),
+                            theme.transitions.create("transform"),
                           ...(isActiveSub && {
-                            transform: 'scale(2)',
-                            bgcolor: 'primary.main',
+                            transform: "scale(2)",
+                            bgcolor: "primary.main",
                           }),
                         }}
                       />
@@ -196,12 +196,13 @@ export default function NavSection({
     <Box sx={sx} {...other}>
       {navConfig.map((list) => {
         const { subheader, items } = list;
-        const navs: [] = items;
+        const navs: [] = items.filter((item: any) => item.title !== undefined);
+
         return (
           <List key={subheader} disablePadding>
             {isShow && <ListSubheaderStyle>{subheader}</ListSubheaderStyle>}
-            {navs.map((item: any) => (
-              <NavItem key={item.title} item={item} isShow={isShow} />
+            {navs.map((item: any, i) => (
+              <NavItem key={i} item={item} isShow={isShow} />
             ))}
           </List>
         );

@@ -1,23 +1,24 @@
-import { useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { useEffect } from "react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Stack, Drawer, Tooltip, CardActionArea } from '@mui/material';
+import { alpha, styled } from "@mui/material/styles";
+import { Box, Stack, Drawer, Tooltip, CardActionArea } from "@mui/material";
 // hooks
-import useCollapseDrawer from 'hooks/useCollapseDrawer';
-import { Scrollbar, NavSection, Logo } from 'components';
+import useCollapseDrawer from "hooks/useCollapseDrawer";
+import { Scrollbar, NavSection, Logo } from "components";
 
-import { MHidden } from 'components/@material-extend';
+import { MHidden } from "components/@material-extend";
+import { useAuthorizedSidebar } from "contexts/AuthorizationContext";
 //
-import sidebarConfig from './SidebarConfig';
+// import sidebarConfig from './SidebarConfig';
 
 const DRAWER_WIDTH = 280;
 const COLLAPSE_WIDTH = 102;
 
-const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
+const RootStyle = styled("div")(({ theme }) => ({
+  [theme.breakpoints.up("lg")]: {
     flexShrink: 0,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       duration: theme.transitions.duration.complex,
     }),
   },
@@ -37,13 +38,13 @@ function IconCollapse({
         sx={{
           width: 18,
           height: 18,
-          display: 'flex',
-          cursor: 'pointer',
-          borderRadius: '50%',
-          alignItems: 'center',
-          color: 'text.primary',
-          justifyContent: 'center',
-          border: 'solid 1px currentColor',
+          display: "flex",
+          cursor: "pointer",
+          borderRadius: "50%",
+          alignItems: "center",
+          color: "text.primary",
+          justifyContent: "center",
+          border: "solid 1px currentColor",
           ...(collapseClick && {
             borderWidth: 2,
           }),
@@ -53,9 +54,9 @@ function IconCollapse({
           sx={{
             width: 8,
             height: 8,
-            borderRadius: '50%',
-            bgcolor: 'currentColor',
-            transition: (theme) => theme.transitions.create('all'),
+            borderRadius: "50%",
+            bgcolor: "currentColor",
+            transition: (theme) => theme.transitions.create("all"),
             ...(collapseClick && {
               width: 0,
               height: 0,
@@ -75,6 +76,7 @@ export default function DashboardSidebar({
   onCloseSidebar: () => void;
 }) {
   const { pathname } = useLocation();
+  const { sidebarConfig } = useAuthorizedSidebar();
 
   const {
     isCollapse,
@@ -96,10 +98,10 @@ export default function DashboardSidebar({
     <Scrollbar
       sx={{
         height: 1,
-        '& .simplebar-content': {
+        "& .simplebar-content": {
           height: 1,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
         },
       }}
     >
@@ -109,7 +111,7 @@ export default function DashboardSidebar({
           px: 2.5,
           pt: 3,
           ...(isCollapse && {
-            alignItems: 'center',
+            alignItems: "center",
           }),
         }}
       >
@@ -118,7 +120,7 @@ export default function DashboardSidebar({
           alignItems="center"
           justifyContent="space-between"
         >
-          <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
+          <Box component={RouterLink} to="/" sx={{ display: "inline-flex" }}>
             <Logo
               sx={{
                 width: 90,
@@ -152,7 +154,7 @@ export default function DashboardSidebar({
           lg: isCollapse ? COLLAPSE_WIDTH : DRAWER_WIDTH,
         },
         ...(collapseClick && {
-          position: 'absolute',
+          position: "absolute",
         }),
       }}
     >
@@ -177,7 +179,7 @@ export default function DashboardSidebar({
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
+              bgcolor: "background.default",
 
               ...(isCollapse && {
                 width: COLLAPSE_WIDTH,
@@ -185,8 +187,8 @@ export default function DashboardSidebar({
               ...(collapseHover && {
                 borderRight: 0,
 
-                backdropFilter: 'blur(6px)',
-                WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)", // Fix on Mobile
                 boxShadow: (theme: any) => theme.customShadows.z20,
 
                 bgcolor: (theme) =>

@@ -20,6 +20,7 @@ import { SettingsProvider } from "contexts/SettingsContext";
 import reportWebVitals from "./reportWebVitals";
 import { PersistGate } from "redux-persist/integration/react";
 import { LoadingScreen } from "components";
+import { AxiosInterceptor } from "utils/axios";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -31,7 +32,9 @@ root.render(
         <PersistGate loading={<LoadingScreen />} persistor={persistor}>
           <SettingsProvider>
             <CollapseDrawerProvider>
-              <App />
+              <AxiosInterceptor>
+                <App />
+              </AxiosInterceptor>
             </CollapseDrawerProvider>
           </SettingsProvider>
         </PersistGate>

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import AuthAPI from "redux/api/auth";
 
 interface AuthState {
   token: string;
@@ -14,17 +15,25 @@ const slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login(state: AuthState, action: any) {
-      state.token = action.payload.token;
-      state.isAuth = true;
-    },
     logout(state: AuthState) {
       state.token = "";
       state.isAuth = false;
     },
   },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(AuthAPI.login.fulfilled, (state, action) => {
+        state.token = action.payload.data.token;
+        state.isAuth = true;
+      })
+      .addCase(AuthAPI.login.rejected, (state, action) => {
+        state.isAuth = false;
+        state.token = "";
+      });
+  },
 });
 
-export const { login, logout } = slice.actions;
+export const { logout } = slice.actions;
 
 export default slice.reducer;

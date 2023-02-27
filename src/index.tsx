@@ -1,21 +1,42 @@
-import React from "react";
+import "simplebar/dist/simplebar.css";
+// import "simplebar/src/simplebar.css";
+
+// lazy image
+import "react-lazy-load-image-component/src/effects/blur.css";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import "react-lazy-load-image-component/src/effects/black-and-white.css";
+
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { store } from "redux/store/store";
+import { persistor, store } from "redux/store/store";
+import { HelmetProvider } from "react-helmet-async";
+import { CollapseDrawerProvider } from "contexts/CollapseDrawerContext";
+import { SettingsProvider } from "contexts/SettingsContext";
+
+import reportWebVitals from "./reportWebVitals";
+import { PersistGate } from "redux-persist/integration/react";
+import { LoadingScreen } from "components";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <PersistGate loading={<LoadingScreen />} persistor={persistor}>
+          <SettingsProvider>
+            <CollapseDrawerProvider>
+              <App />
+            </CollapseDrawerProvider>
+          </SettingsProvider>
+        </PersistGate>
+      </Provider>
+    </HelmetProvider>
   </BrowserRouter>
 );
 

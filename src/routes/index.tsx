@@ -1,9 +1,11 @@
-import { DashboardLayout } from "layouts";
+import DashboardLayout from "layouts/dashboard";
 import { Fragment, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import NotFound from "pages/404";
-import { AuthGuard } from "guards";
-import Login from "pages/Login";
+import { AuthGuard, GuestGuard } from "guards";
+import Login from "pages/auth/Login";
+import { PATH_ADMIN } from "./paths";
+import { LoadingScreen } from "components";
 
 interface IRoutes {
   id: number;
@@ -15,7 +17,7 @@ interface IRoutes {
 
 const Loadable = (Component: any) => (props: any) => {
   return (
-    <Suspense fallback={<div>loading..</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <Component {...props} />
     </Suspense>
   );
@@ -42,9 +44,26 @@ export default function AppRoutes() {
         );
       })}
 
-      <Route path="/" element={<Navigate to={"/dashboard/app"} />} />
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/" element={<Navigate to={"/dashboard/app"} />} />
+      <Route
+        path="/"
+        element={<Navigate to={PATH_ADMIN.directories.overview} />}
+      />
+      <Route
+        path="/auth/login"
+        element={
+          <GuestGuard>
+            <Login />
+          </GuestGuard>
+        }
+      />
+      <Route
+        path="/"
+        element={<Navigate to={PATH_ADMIN.directories.overview} />}
+      />
+      <Route
+        path="/dashboard"
+        element={<Navigate to={PATH_ADMIN.directories.overview} />}
+      />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
@@ -56,7 +75,15 @@ const routes: IRoutes[] = [
     id: 1,
     layout: DashboardLayout,
     guard: AuthGuard,
-    component: Loadable(lazy(() => import("pages/DashboardApp"))),
-    path: "/dashboard/app",
+    component: Loadable(lazy(() => import("pages/dashboard/GeneralApp"))),
+    path: PATH_ADMIN.directories.overview,
+  },
+
+  {
+    id: 2,
+    layout: DashboardLayout,
+    guard: AuthGuard,
+    component: Loadable(lazy(() => import("pages/dashboard/UserList"))),
+    path: PATH_ADMIN.directories.userManagement.users,
   },
 ];
